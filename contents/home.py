@@ -1,8 +1,7 @@
 import streamlit as st
-import os
-from pathlib import Path
 import pandas as pd
 
+import config
 from utils import collect_app_info
 
 
@@ -10,22 +9,12 @@ first_columns = ["app", "url", "status"]
 hidden_columns = ["visible"]
 
 
-if os.name == "nt":
-    root_dirs = [r"C:\Users\marit\Documents\python"]
-else:
-    root_dirs = []
-    for user_path in Path("/home").iterdir():
-        if any(s in str(user_path) for s in ["admin", "sysmgr"]):
-            continue
-        root_dirs.append(str(user_path / "streamlit"))
-
-
 st.title("Streamlit Web Apps")
 st.set_page_config(page_title="Streamlit Server", page_icon=":signal_strength:", layout="wide")
 
 # データの取得
 data = []
-for dir in root_dirs:
+for dir in config.ROOT_DIRS:
     data += collect_app_info(dir)
 
 # visible == True のみ抽出

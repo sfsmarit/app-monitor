@@ -4,7 +4,7 @@ import yaml
 import toml
 
 
-HOSTNAME = socket.gethostname()
+HOST = socket.gethostname()
 
 
 def generate_email_from_name(name: str) -> str:
@@ -12,21 +12,37 @@ def generate_email_from_name(name: str) -> str:
     return f"{address}@skyworksinc.com"
 
 
-def check_active(port: int, timeout: float = 1.0) -> bool:
+def check_TCP_connection(port: int, timeout: float = 0.2) -> bool:
     """TCPコネクションが張れるかを確認（ポートが開いているか）"""
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         sock.settimeout(timeout)
         try:
-            sock.connect((HOSTNAME, port))
+            sock.connect((HOST, port))
             return True
         except (socket.timeout, ConnectionRefusedError, OSError):
             return False
+
+
+def can_bind(port: int) -> bool:
+    """指定ポートにバインド可能か（=他プロセスが使用していないか）"""
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        # NOTE: OSごとの挙動差に注意。REUSEADDR は TIME_WAIT を回避するのに使われるが、
+        # 厳密な占有チェックなら設定しない方が良い。
+        # s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        s.bind((HOST, port))
+        return True
+    except OSError:
+        return False
+    finally:
+        s.close()
 
 
 def collect_app_info(root_dir: str) -> list[dict]:
     data = []
 
     info_files = list(Path(root_dir).rglob("info.yaml"))
+
     for file in info_files:
         # YAMLファイルの読み込み
         with open(file, "r", encoding="utf-8") as f:
@@ -46,10 +62,10 @@ def collect_app_info(root_dir: str) -> list[dict]:
             port = "unknown"
         info["port"] = port
 
-        url = f"http://{HOSTNAME}:{port}"
+        url = f"http://{HOST}:{port}"
         info["url"] = url
 
-        info["status"] = "active" if check_active(info["port"]) else "inactive"
+        info["status"] = "active" if check_TCP_connection(info["port"]) else "inactive"
 
         data.append(info)
 
