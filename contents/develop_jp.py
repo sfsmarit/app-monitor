@@ -10,8 +10,8 @@ HOST = socket.gethostname()
 
 st.title("Streamlit 開発ガイド")
 
-components.render_resouce_usage()
-components.render_available_ports()
+placeholder_resource = st.empty()
+placeholder_port = st.empty()
 
 st.markdown("---")
 
@@ -20,9 +20,17 @@ st.markdown(
     f"""
     IT Service Desk{nl}
     https://skyworksinc.atlassian.net/servicedesk/customer/portal/9/group/37/create/229 {nl}
+    
+    ```
     [Summary]
     Request for login access to {HOST}
-       
+    
+    [Description]
+    I would like to release Streamlit Web application and request the following access permissions:
+    1. Login accress to {HOST}
+    2. Write permission to /data
+    ```
+    
     DB を使用する場合は、DB へのアクセス権限も別チケットでリクエストしましょう。
     """
 )
@@ -110,3 +118,7 @@ st.markdown(
     ```
     """
 )
+
+
+components.render_resouce_usage(placeholder_resource)
+components.render_available_ports(placeholder_port)

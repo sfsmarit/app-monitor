@@ -3,6 +3,8 @@ import socket
 import yaml
 import toml
 
+import config
+
 
 HOST = socket.gethostname()
 
@@ -38,35 +40,37 @@ def can_bind(port: int) -> bool:
         s.close()
 
 
-def collect_app_info(root_dir: str) -> list[dict]:
+def collect_app_info(check_status: bool = True) -> list[dict]:
     data = []
 
-    info_files = list(Path(root_dir).rglob("info.yaml"))
+    for dir in config.ROOT_DIRS:
+        info_files = list(Path(dir).rglob("info.yaml"))
 
-    for file in info_files:
-        # YAMLファイルの読み込み
-        with open(file, "r", encoding="utf-8") as f:
-            info = yaml.safe_load(f)
+        for file in info_files:
+            # YAMLファイルの読み込み
+            with open(file, "r", encoding="utf-8") as f:
+                info = yaml.safe_load(f)
 
-        # email を補完
-        if not info["email"]:
-            name = info.get("developer", "")
-            info["email"] = generate_email_from_name(name)
+            # email を補完
+            if not info["email"]:
+                name = info.get("developer", "")
+                info["email"] = generate_email_from_name(name)
 
-        # .streamlit/config.toml の読み込み
-        config_file = file.parent / ".streamlit/config.toml"
-        if config_file.exists():
-            config = toml.load(config_file)
-            port = config.get("server", {}).get("port")
-        else:
-            port = "unknown"
-        info["port"] = port
+            # .streamlit/config.toml の読み込み
+            config_file = file.parent / ".streamlit/config.toml"
+            if config_file.exists():
+                config_data = toml.load(config_file)
+                port = config_data.get("server", {}).get("port")
+            else:
+                port = "unknown"
+            info["port"] = port
 
-        url = f"http://{HOST}:{port}"
-        info["url"] = url
+            url = f"http://{HOST}:{port}"
+            info["url"] = url
 
-        info["status"] = "enabled" if check_TCP_connection(info["port"]) else "disabled"
+            if check_status:
+                info["status"] = "enabled" if check_TCP_connection(info["port"]) else "disabled"
 
-        data.append(info)
+            data.append(info)
 
     return data

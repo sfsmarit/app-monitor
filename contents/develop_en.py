@@ -1,16 +1,16 @@
-
 import streamlit as st
 import socket
 
 import common.components as components
+
 
 nl = "  "
 HOST = socket.gethostname()
 
 st.title("Streamlit Development Guide")
 
-components.render_resouce_usage()
-components.render_available_ports()
+placeholder_resource = st.empty()
+placeholder_port = st.empty()
 
 st.markdown("---")
 
@@ -19,9 +19,17 @@ st.markdown(
     f"""
     IT Service Desk{nl}
     https://skyworksinc.atlassian.net/servicedesk/customer/portal/9/group/37/create/229 {nl}
+    
+    ```
     [Summary]
-    Request login access to {HOST}
-       
+    Request for login access to {HOST}
+    
+    [Description]
+    I would like to release Streamlit Web application and request the following access permissions:
+    1. Login accress to {HOST}
+    2. Write permission to /data
+    ```
+
     If you need to use a database, please submit a separate ticket for DB access permissions.
     """
 )
@@ -108,3 +116,6 @@ st.markdown(
     ```
     """
 )
+
+components.render_resouce_usage(placeholder_resource)
+components.render_available_ports(placeholder_port)

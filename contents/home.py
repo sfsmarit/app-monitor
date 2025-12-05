@@ -11,10 +11,11 @@ hidden_columns = ["visible"]
 
 st.title("Streamlit Dashboard")
 
+check_status = st.button("Check Status")
+
 # データの取得
-data = []
-for dir in config.ROOT_DIRS:
-    data += collect_app_info(dir)
+with st.spinner("Loading data..."):
+    data = collect_app_info(check_status)
 
 # visible == True のみ抽出
 data = [d for d in data if d.get("visible", True)]

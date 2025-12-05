@@ -5,9 +5,8 @@ import config
 import common.utils as ut
 
 
-def render_resouce_usage():
-    # Resource usage
-    cols = st.columns(3)
+def render_resouce_usage(placeholder):
+    cols = placeholder.columns(3)
     with cols[0]:
         # CPU usage
         cpu_pct = psutil.cpu_percent(interval=1)
@@ -35,10 +34,8 @@ def render_resouce_usage():
             st.progress(int(min(disk.percent, 100)))
 
 
-def render_available_ports(start=8501, stop=8699):
-    data = []
-    for dir in config.ROOT_DIRS:
-        data += ut.collect_app_info(dir)
+def render_available_ports(placeholder, start=8501, stop=8699):
+    data = ut.collect_app_info(check_status=False)
 
     used_ports = [d["port"] for d in data]
     available_ports = []
@@ -49,14 +46,15 @@ def render_available_ports(start=8501, stop=8699):
         if ut.can_bind(port):
             available_ports.append(port)
 
-    st.markdown("#### Available Ports")
-    st.selectbox(
-        "",
-        available_ports,
-        label_visibility="collapsed",
-    )
-    st.markdown(
-        f"""
-        > It is recommended to use port 8501-8600 for test apps.
-        """
-    )
+    with placeholder.container():
+        st.markdown("#### Available Ports")
+        st.selectbox(
+            "",
+            available_ports,
+            label_visibility="collapsed",
+        )
+        st.markdown(
+            f"""
+            > It is recommended to use port 8501-8600 for test apps.
+            """
+        )
