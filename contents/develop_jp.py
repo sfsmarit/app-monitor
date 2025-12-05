@@ -1,7 +1,7 @@
 import streamlit as st
 import socket
 
-import components
+import common.components as components
 
 
 nl = "  "

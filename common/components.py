@@ -2,7 +2,7 @@ import streamlit as st
 import psutil
 
 import config
-import utils as ut
+import common.utils as ut
 
 
 def render_resouce_usage():
@@ -36,23 +36,27 @@ def render_resouce_usage():
 
 
 def render_available_ports(start=8501, stop=8699):
-    # Used port
     data = []
     for dir in config.ROOT_DIRS:
         data += ut.collect_app_info(dir)
+
     used_ports = [d["port"] for d in data]
     available_ports = []
-    for port in range(start, stop):
+
+    for port in range(start, stop+1):
         if port in used_ports:
             continue
         if ut.can_bind(port):
             available_ports.append(port)
 
     st.markdown("#### Available Ports")
-    st.selectbox("", available_ports, label_visibility="collapsed",
-                 help="It is recommended to keep 8501-8599 open for test apps")
+    st.selectbox(
+        "",
+        available_ports,
+        label_visibility="collapsed",
+    )
     st.markdown(
         f"""
-        > It is recommended to keep ports 8501-8600 open for test apps.
+        > It is recommended to use ports 8501-8600 for test apps.
         """
     )

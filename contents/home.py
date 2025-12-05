@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 import config
-from utils import collect_app_info
+from common.utils import collect_app_info
 
 
 first_columns = ["app", "url", "status"]
