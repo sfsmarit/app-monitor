@@ -3,7 +3,7 @@ import streamlit as st
 
 st.set_page_config(page_title="Streamlit Dashboard", page_icon=":signal_strength:", layout="wide")
 
-st.sidebar.radio("Language", ["JP", "EN"], key="language")
+st.sidebar.radio("Language", ["EN", "JP"], key="language")
 
 pages = [
     st.Page("contents/home.py", title="Home", icon=":material/home:"),

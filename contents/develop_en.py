@@ -74,7 +74,7 @@ def render():
     st.subheader("4. Place info.yaml", divider=True)
     st.markdown(
         f"""
-        Ensure your app information is displayed in the Streamlit Server app list.
+        Ensure your app information is displayed in the Streamlit Dashboard.
         ```bash
         # Navigate to the project directory
         cd ~/streamlit/sample-app/
