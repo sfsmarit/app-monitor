@@ -55,6 +55,7 @@ def render_available_ports(placeholder, start=8501, stop=8699):
         )
         st.markdown(
             f"""
-            > It is recommended to use port 8501-8600 for test apps.
+            > It is recommended to use port 8601-8699.
+            > Port 8501-8600 should be open for test apps.
             """
         )

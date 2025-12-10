@@ -30,8 +30,6 @@ def render():
         1. Login accress to {HOST}
         2. Write permission to /data
         ```
-        
-        DB を使用する場合は、DB へのアクセス権限も別チケットでリクエストしましょう。
         """
     )
 
@@ -41,11 +39,9 @@ def render():
         こちらのページで詳しく解説しています。{nl}
         https://app-startguide.streamlit.app/
         
-        デプロイするときは、ホームディレクトリの直下に`streamlit`ディレクトリを作成し、その下にアプリを配置してください。
+        デプロイするときは `/data/streamlit/` にアプリを配置してください。
         ```bash
-        cd
-        mkdir streamlit
-        cd streamlit
+        cd /data/streamlit/
         git clone https://github.com/<UserName>/sample-app.git
         ```
         
@@ -55,19 +51,22 @@ def render():
     st.subheader("3. ポートの固定", divider=True)
     st.markdown(
         f"""
+        `.streamlit/config.toml` を作成します。
         ```bash
         # プロジェクトディレクトリに移動
-        cd ~/streamlit/sample-app/
+        cd /data/streamlit/sample-app/
         
         # .streamlit/config.toml を作成
         mkdir .streamlit
         touch .streamlit/config.toml
         ```    
-        config.toml を編集してポートを指定します。
+        
+        config.toml に以下を記述します。      
         ```toml
         [server]
         port=8650
         ```    
+
         利用可能なポートについては、ページ上部の [Available Ports] を参照してください。
         """
     )
@@ -75,14 +74,15 @@ def render():
     st.subheader("4. info.yaml の配置", divider=True)
     st.markdown(
         f"""
-        アプリが Streamlit Dashboard に表示されるようにします。
+        アプリが Dashboard に表示されるようにします。
         ```bash
         # プロジェクトディレクトリに移動
-        cd ~/streamlit/sample-app/
+        cd /data/streamlit/sample-app/
 
         # info.yaml をコピー
         cp /home/marit/template/info.yaml ./
         ```    
+
         info.yaml を編集します。
         ```yaml
         app: "AppName"
@@ -100,9 +100,11 @@ def render():
         f"""
         アプリの起動
         ```bash
+        # /data/streamlit/streamlit : Python 仮想環境 
         # nohup : ログアウトしてもプロセスが残る
         # & : バックグラウンド実行
-        nohup <path_to_venv>/bin/streamlit run main.py &
+        cd /data/streamlit/sample-app/
+        nohup /data/streamlit/streamlit/bin/streamlit run main.py &
         ```
 
         実行中のアプリの確認

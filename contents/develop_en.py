@@ -15,7 +15,7 @@ def render():
 
     st.markdown("---")
 
-    st.subheader("1. Obtain a Streamlit Server Account", divider=True)
+    st.subheader("1. Obtain Streamlit Server Account", divider=True)
     st.markdown(
         f"""
         IT Service Desk{nl}
@@ -26,47 +26,47 @@ def render():
         Request for login access to {HOST}
         
         [Description]
-        I would like to release Streamlit Web application and request the following access permissions:
-        1. Login accress to {HOST}
+        I would like to release a Streamlit Web application and request the following access permissions:
+        1. Login access to {HOST}
         2. Write permission to /data
         ```
-
-        If you need to use a database, please submit a separate ticket for DB access permissions.
         """
     )
 
     st.subheader("2. App Development & Deployment", divider=True)
     st.markdown(
         f"""
-        Detailed instructions are available on this page:{nl}
+        Detailed explanation is available on this page:{nl}
         https://app-startguide.streamlit.app/
         
-        When deploying, create a `streamlit` directory in your home directory and place your app inside it.
+        When deploying, place the app in `/data/streamlit/`.
         ```bash
-        cd
-        mkdir streamlit
-        cd streamlit
+        cd /data/streamlit/
         git clone https://github.com/<UserName>/sample-app.git
         ```
+        
         """
     )
 
     st.subheader("3. Fixing the Port", divider=True)
     st.markdown(
         f"""
+        Create `.streamlit/config.toml`.
         ```bash
-        # Navigate to the project directory
-        cd ~/streamlit/sample-app/
+        # Move to the project directory
+        cd /data/streamlit/sample-app/
         
         # Create .streamlit/config.toml
         mkdir .streamlit
         touch .streamlit/config.toml
         ```    
-        Edit config.toml to specify the port:
+        
+        Add the following to config.toml:      
         ```toml
         [server]
         port=8650
         ```    
+
         For available ports, refer to [Available Ports] at the top of the page.
         """
     )
@@ -74,14 +74,15 @@ def render():
     st.subheader("4. Place info.yaml", divider=True)
     st.markdown(
         f"""
-        Ensure your app information is displayed in the Streamlit Dashboard.
+        Make the app visible on the Dashboard.
         ```bash
-        # Navigate to the project directory
-        cd ~/streamlit/sample-app/
+        # Move to the project directory
+        cd /data/streamlit/sample-app/
 
         # Copy info.yaml
         cp /home/marit/template/info.yaml ./
         ```    
+
         Edit info.yaml:
         ```yaml
         app: "AppName"
@@ -99,9 +100,11 @@ def render():
         f"""
         Start the app:
         ```bash
-        # nohup: Keeps the process running after logout
-        # & : Run in the background
-        nohup <path_to_venv>/bin/streamlit run main.py &
+        # /data/streamlit/streamlit : Python virtual environment 
+        # nohup : Keeps process running after logout
+        # & : Run in background
+        cd /data/streamlit/sample-app/
+        nohup /data/streamlit/streamlit/bin/streamlit run main.py &
         ```
 
         Check running apps:

@@ -71,6 +71,9 @@ def collect_app_info(check_status: bool = True) -> list[dict]:
             if check_status:
                 info["status"] = "enabled" if check_TCP_connection(info["port"]) else "disabled"
 
+            info.setdefault("test", True)
+            info.setdefault("visible", True)
+
             data.append(info)
 
     return data
