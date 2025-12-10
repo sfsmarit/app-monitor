@@ -35,5 +35,6 @@ st.table(df1)
 
 df2 = df[df["test"] == True].drop(columns=hidden_columns)
 if len(df2):
+    st.markdown("---")
     st.subheader("Test")
     st.table(df2)
