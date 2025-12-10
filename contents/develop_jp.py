@@ -90,6 +90,7 @@ def render():
         intended_users: ""
         developer: "YourName"
         email: ""
+        test: false
         visible: true
         ```    
         """
