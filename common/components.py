@@ -1,9 +1,10 @@
 import streamlit as st
 import psutil
 
-import config
 import common.utils as ut
 
+
+nl = "  "
 
 def render_resouce_usage(placeholder):
     cols = placeholder.columns(3)
@@ -55,7 +56,7 @@ def render_available_ports(placeholder, start=8501, stop=8699):
         )
         st.markdown(
             f"""
-            > It is recommended to use port 8601-8699.
+            > It is recommended to use port 8601-8699.{nl}
             > Port 8501-8600 should be open for test apps.
             """
         )
