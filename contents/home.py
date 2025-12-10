@@ -29,11 +29,11 @@ columns = first_columns + [col for col in unique_keys if col not in first_column
 df = pd.DataFrame(data, columns=columns)
 df = df.sort_values(by="port")
 
-df1 = df[df["test"] == True].drop(columns=hidden_columns)
+df1 = df[df["test"] == False].drop(columns=hidden_columns)
 st.subheader("Released")
 st.table(df1)
 
-df2 = df[df["test"] == False].drop(columns=hidden_columns)
+df2 = df[df["test"] == True].drop(columns=hidden_columns)
 if len(df2):
     st.subheader("Test")
     st.table(df2)
